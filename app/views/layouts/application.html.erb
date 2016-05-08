@@ -13,6 +13,12 @@
 </head>
 <body>
 
+<%if current_user %>
+  Welcome <%= link_to current_user.email, 'users#show' %> | <%= link_to "Logout", '/logout' %>
+<%else%>
+  <%= link_to 'Login', '/login'%> | <%= link_to 'Sign Up', '/signup'%>
+<%end%>
+
 <%= yield %>
 
 </body>
