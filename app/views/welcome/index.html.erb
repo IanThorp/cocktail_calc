@@ -27,7 +27,7 @@
                 <label class="radio-inline method"><input type="radio" name="method" id="shaken" value="shaken">Shaken</label>
                 <label class="radio-inline method"><input type="radio" name="method" id="built" value="built">Built</label>
                 <label class="radio-inline method"><input type="radio" name="method" id="built" value="carbonated">Carbonated</label>
-                <p><label class="checkbox-inline"><input type="checkbox" id="autoDilute" value="diluteChecked">Auto-dilute</label> </p>
+                <p><label class="checkbox-inline"><input type="checkbox" name="dilution" id="autoDilute" value="diluteChecked">Auto-dilute</label> </p>
                 <p>
                     <button type="reset" id="reset" class="btn btn-danger">Reset</button>
                 </p>
@@ -112,13 +112,13 @@
             </table>
             <button class="btn btn-default" id="print">Print</button>
             <%if current_user%>
-                <button class="btn btn-default" id="save">Save Recipe</button>
+                <%= button_to "Save Recipe", {controller: 'recipes', action: 'create', user_id: current_user.id }, {form_class: 'save_recipe', remote: true,  data: {type: :json} }  %>
             <%end%>
         </div>
     </div>
     <div class="row">
       <div class="alert alert-info">
-        <a href="http://amzn.to/1T6DYJn"><img src="http://ecx.images-amazon.com/images/I/41JRiTnrD7L._SX465_BO1,204,203,200_.jpg" width="80px"></a></img> One of my favorite cocktail books, <a href="http://amzn.to/1T6DYJn">Death and Co.</a>.
+        <a href="http://amzn.to/1T6DYJn"><img src="http://ecx.images-amazon.com/images/I/41JRiTnrD7L._SX465_BO1,204,203,200_.jpg" width="80px"></a></img> One of my favorite cocktail books, <a href="http://amzn.to/1T6DYJn">Death and Co.</a>
       </div>
     </div>
 
