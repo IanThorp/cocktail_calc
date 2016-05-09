@@ -1,5 +1,6 @@
 <h1><%=@user.email%>'s Profile</h1>
 
 <%@recipes.each do |recipe|%>
-  <h2><%=recipe.name%></h2>
+  <%ingr_rec_arr = recipe.ingredients_recipes.to_a%>
+  <h2><%= link_to recipe.name, {controller: 'welcome', action: 'index', user_id: @user.id, ingredients_recipes: ingr_rec_arr }%></h2>
 <%end%>

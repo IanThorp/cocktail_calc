@@ -1,7 +1,6 @@
 class RecipesController < ApplicationController
 
   def create
-    p 'This WORKED'
     recipe_data = JSON.parse(params[:recipe])
     @recipe = Recipe.new(user_id: current_user.id, name: "Buster Brown", dilute: recipe_data["dilute"], method: recipe_data["method"])
     if @recipe.save

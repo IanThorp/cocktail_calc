@@ -7,8 +7,7 @@ var finalABV = 0;
 var finalVolume = 0;
 var totalAlcohol = 0;
 
-$(document).ready(function(){
-
+$(document).on('ready page:load', function(){
     for (var startingrows=1; startingrows<4; startingrows++){
         addRow();
     }
@@ -20,20 +19,39 @@ $(document).ready(function(){
     $("button#calculate").click(function(){
         calculate()
     });
-
     printButtonListener();
+    console.log("It is below");
 
+    test = getURLParameter("ingredients_recipes%5B%5D");
+    console.log(test)
     batchButtonsListener();
 
     printRecipe();
+    debugger;
 
 });
+var grabParams = function(){}
+function fixedEncodeURI (str) {
+    return encodeURI(str).replace(/%5B/g, '[').replace(/%5D/g, ']');
+}
 
-var addRow = function(){
+function escapeRegExp(str) {
+    return str.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
+}
+
+function replaceAll(str, find, replace) {
+  return str.replace(new RegExp(escapeRegExp(find), 'g'), replace);
+}
+
+var getURLParameter = function(name) {
+  return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,""])[1].replace(/\+/g, '%20'))||null;
+}
+
+var addRow = function(volume = "volume", unit = "oz", abv = "abv", name = "test"){
          $i++;
         var newrow = $('<tr class="ingredientRow" id="' +$i + '">\
                     <td>\
-                        <input type="text" class="volume form-control" id="volume' +$i +'">\
+                        <input type="text" value=' + volume + ' class="volume form-control" id="volume' +$i +'">\
                     </td>\
                     <td>\
                         <select class="form-control" id="unit' +$i +'">\
@@ -43,9 +61,9 @@ var addRow = function(){
                            <option value="drop">drop</option>\
                         </select> \
                     </td>\
-                    <td><input type="text" class="volume form-control" id="abv' +$i +'">\
+                    <td><input type="text" value=' + abv + ' class="volume form-control" id="abv' +$i +'">\
                     <td>\
-                        <input type="text" class="name form-control" id="name' +$i +'">\
+                        <input type="text" value=' + name + ' class="name form-control" id="name' +$i +'">\
                     </td>\
                     <td><p id="ml' +$i + '">0</p></td>\
                 </tr>');
