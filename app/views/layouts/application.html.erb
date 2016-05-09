@@ -14,9 +14,9 @@
 <body>
 
 <%if current_user %>
-  Welcome <%= link_to current_user.email, 'users#show' %> | <%= link_to "Logout", '/logout' %>
+  <%= link_to 'Home', root_path %> | <%= link_to current_user.email, {controller: 'recipes', action: 'index', user_id: current_user.id } %> | <%= link_to "Logout", '/logout' %>
 <%else%>
-  <%= link_to 'Login', '/login'%> | <%= link_to 'Sign Up', '/signup'%>
+  <%= link_to 'Home', root_path %> | <%= link_to 'Login', '/login'%> | <%= link_to 'Sign Up', '/signup'%>
 <%end%>
 
 <%= yield %>

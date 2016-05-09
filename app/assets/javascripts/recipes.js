@@ -5,8 +5,8 @@ $(document).ready(function(){
 
 
 var saveRecipeListener = function() {
-  $(".save_recipe").on("ajax:before", function(){
-    console.log("This is in Before AJAX");
+  $(".save_recipe").on("ajax:beforeSend", function(event, xhr, settings){
+    console.log("This is in BeforeSend AJAX");
     var recipe = {
       ingrArr: [],
       method: $("input[name=method]:checked", "#recipeForm").val(),
@@ -17,10 +17,18 @@ var saveRecipeListener = function() {
     for(var i = 1; i <= recipe.numIngr; i++){
       recipe.ingrArr.push(getIngredientValues(i));
     }
-    var ingredients = recipe.ingrArr;
-    var url =
-    var method = 'POST';
+
+    json_recipe = JSON.stringify(recipe)
+    settings.data += json_recipe;
   });
+
+  $(".save_recipe").on("ajax:success", function(event, response){
+    console.log("Succesfully Saved Recipe");
+  })
+
+  $(".save_recipe").on("ajax:error", function(event, xhr, status, error){
+    console.log(error);
+  })
 }
 
 var getIngredientValues = function(id){

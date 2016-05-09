@@ -112,7 +112,7 @@
             </table>
             <button class="btn btn-default" id="print">Print</button>
             <%if current_user%>
-                <%= button_to "Save Recipe", {controller: 'recipes', action: 'create', user_id: current_user.id }, {form_class: 'save_recipe', remote: true,  data: {type: :json} }  %>
+                <%= button_to "Save Recipe", {controller: 'recipes', action: 'create', user_id: current_user.id }, {form_class: 'save_recipe', remote: true,  data: {type: :json}, params: {recipe: ""} }  %>
             <%end%>
         </div>
     </div>
