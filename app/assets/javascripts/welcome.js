@@ -37,7 +37,8 @@ var recipeGrabber = function(){
   $.get( recipe_id + "/api", {recipe_id: recipe_id}, function(data){
     $("#" + data[0].method).attr("checked", true)
     // $("#recipe_name")
-    $("#dilute").val(data[0].dilute)
+    $("#autoDilute").prop("checked", data[0].dilute)
+    console.log(data[0].dilute)
     for (var ingredient in data[1]){
 
       addRow(data[1][ingredient].volume, data[1][ingredient].unit, data[1][ingredient].abv, data[1][ingredient].name);

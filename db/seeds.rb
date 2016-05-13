@@ -1,9 +1,14 @@
 
+user = User.new(email: "tom@tom.com", password: "tomtom", password_confirmation: "tomtom")
+
+user.save
+
+
 100.times do
   Ingredient.create(name: Faker::Hipster.word, abv: Faker::Commerce.price)
 end
 
-methods = ["stir", "shake", "build", "carbonated"]
+methods = ["stirred", "shaken", "built", "carbonated"]
 100.times do
   Recipe.create(name: Faker::Superhero.name, dilute: Faker::Boolean.boolean, method: methods.sample, user_id: 1)
 end
