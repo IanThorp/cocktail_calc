@@ -18,6 +18,37 @@ class RecipesController < ApplicationController
     @recipes = Recipe.where(user_id: @user.id)
   end
 
+  def api
+    recipe_id = params[:recipe_id]
+    @recipe = Recipe.find(recipe_id)
+    @ingredients_recipes = @recipe.ingredients_recipes
+    @ingredients = @recipe.ingredients
+
+    @recipe_data = {
+      method: @recipe.method,
+      dilute: @recipe.dilute,
+      name: @recipe.name
+    }
+
+    @rows = {}
+    @ingredients.each do |ingredient|
+      @index = @ingredients.index(ingredient).to_s
+      @ingredients_recipe = IngredientsRecipe.find_by(ingredient_id: ingredient.id, recipe_id: @recipe.id)
+      @rows[@index] = {
+        abv: ingredient[:abv],
+        name: ingredient[:name],
+        unit: @ingredients_recipe[:unit],
+        volume: @ingredients_recipe[:volume]
+      }
+    end
+
+    render json: [@recipe_data, @rows]
+  end
+
+
+  def show
+  end
+
 private
   def match_ingredient(ingredient)
     @matching_ing = Ingredient.where(name: ingredient["name"], abv: ingredient["abv"])

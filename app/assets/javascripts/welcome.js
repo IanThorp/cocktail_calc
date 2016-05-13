@@ -8,68 +8,75 @@ var finalVolume = 0;
 var totalAlcohol = 0;
 
 $(document).on('ready page:load', function(){
+  if ($(".welcome").length > 0) {
     for (var startingrows=1; startingrows<4; startingrows++){
         addRow();
     }
+  } else if($(".recipes.show").length > 0) {
+    recipeGrabber();
+  };
 
-    $("button#addRow").click(function(){
-        addRow();
-    });
+  $("button#addRow").click(function(){
+      addRow();
+  });
 
-    $("button#calculate").click(function(){
-        calculate()
-    });
-    printButtonListener();
-    console.log("It is below");
+  $("button#calculate").click(function(){
+      calculate()
+  });
+  printButtonListener();
 
-    test = getURLParameter("ingredients_recipes%5B%5D");
-    console.log(test)
-    batchButtonsListener();
+  batchButtonsListener();
 
-    printRecipe();
-    debugger;
+  printRecipe();
 
 });
-var grabParams = function(){}
-function fixedEncodeURI (str) {
-    return encodeURI(str).replace(/%5B/g, '[').replace(/%5D/g, ']');
-}
 
-function escapeRegExp(str) {
-    return str.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
-}
+var recipeGrabber = function(){
+  var ids = readParams();
+  var recipe_id = parseInt(ids[1]);
+  $.get( recipe_id + "/api", {recipe_id: recipe_id}, function(data){
+    $("#" + data[0].method).attr("checked", true)
+    // $("#recipe_name")
+    $("#dilute").val(data[0].dilute)
+    for (var ingredient in data[1]){
 
-function replaceAll(str, find, replace) {
-  return str.replace(new RegExp(escapeRegExp(find), 'g'), replace);
-}
+      addRow(data[1][ingredient].volume, data[1][ingredient].unit, data[1][ingredient].abv, data[1][ingredient].name);
+    };
+    calculate();
+  });
+};
 
-var getURLParameter = function(name) {
-  return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,""])[1].replace(/\+/g, '%20'))||null;
-}
+var readParams = function(){
+  var path = this.location.pathname;
+  var ids = path.match(/\d+/g);
+  return ids;
+};
 
-var addRow = function(volume = "volume", unit = "oz", abv = "abv", name = "test"){
-         $i++;
-        var newrow = $('<tr class="ingredientRow" id="' +$i + '">\
-                    <td>\
-                        <input type="text" value=' + volume + ' class="volume form-control" id="volume' +$i +'">\
-                    </td>\
-                    <td>\
-                        <select class="form-control" id="unit' +$i +'">\
-                           <option value="oz">fl. oz</option>\
-                           <option value="ml">mL</option>\
-                           <option value="dash">dash</option>\
-                           <option value="drop">drop</option>\
-                        </select> \
-                    </td>\
-                    <td><input type="text" value=' + abv + ' class="volume form-control" id="abv' +$i +'">\
-                    <td>\
-                        <input type="text" value=' + name + ' class="name form-control" id="name' +$i +'">\
-                    </td>\
-                    <td><p id="ml' +$i + '">0</p></td>\
-                </tr>');
-
-        $('#recipeTable > tbody:last-child').append(newrow);
-
+var addRow = function(volume = "", unit = "", abv = "", name = ""){
+   $i++;
+  var newrow = $('<tr class="ingredientRow" id="' +$i + '">\
+              <td>\
+                  <input type="text" class="volume form-control" id="volume' +$i +'">\
+              </td>\
+              <td>\
+                  <select class="form-control" id="unit' +$i +'">\
+                     <option id="oz' + $i + '" value="oz">fl. oz</option>\
+                     <option id="ml' + $i + '" value="ml">mL</option>\
+                     <option id="dash' + $i + '" value="dash">dash</option>\
+                     <option id="drop' + $i + '" value="drop">drop</option>\
+                  </select> \
+              </td>\
+              <td><input type="text" class="volume form-control" id="abv' +$i +'">\
+              <td>\
+                  <input type="text" class="name form-control" id="name' +$i +'">\
+              </td>\
+              <td><p id="ml' +$i + 'display">0</p></td>\
+          </tr>');
+  $('#recipeTable > tbody:last-child').append(newrow);
+  $("#" + unit + $i).attr("selected", true);
+  $("#volume" + $i).val(volume);
+  $("#abv" + $i).val(abv);
+  $("#name" + $i).val(name);
 };
 
 var printRecipe = function(){
@@ -165,7 +172,7 @@ var calculate = function(){
         totalAlcohol += alcohol;
 
         //write ML
-        var mlrow = 'ml' + tableread;
+        var mlrow = 'ml' + tableread + 'display';
 
         Math.round(volume*10000)/10000;
         $("#" + mlrow).text(volume);

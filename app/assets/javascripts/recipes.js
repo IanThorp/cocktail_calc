@@ -6,7 +6,6 @@ $(document).on('ready page:load', function(){
 
 var saveRecipeListener = function() {
   $(".save_recipe").on("ajax:beforeSend", function(event, xhr, settings){
-    console.log("This is in BeforeSend AJAX");
     var recipe = {
       ingrArr: [],
       method: $("input[name=method]:checked", "#recipeForm").val(),

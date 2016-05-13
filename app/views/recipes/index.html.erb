@@ -2,5 +2,5 @@
 
 <%@recipes.each do |recipe|%>
   <%ingr_rec_arr = recipe.ingredients_recipes.to_a%>
-  <h2><%= link_to recipe.name, {controller: 'welcome', action: 'index', user_id: @user.id, ingredients_recipes: ingr_rec_arr }%></h2>
+  <h2><%= link_to recipe.name, {controller: 'recipes', action: 'show', user_id: @user.id, id: recipe.id }%></h2>
 <%end%>
