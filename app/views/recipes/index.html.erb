@@ -1,6 +1,8 @@
-<h1><%=@user.email%>'s Profile</h1>
+<h1 class="text-center"><%=@user.email%>'s Profile</h1>
 
+<ul class="list-group">
 <%@recipes.each do |recipe|%>
   <%ingr_rec_arr = recipe.ingredients_recipes.to_a%>
-  <h2><%= link_to recipe.name, {controller: 'recipes', action: 'show', user_id: @user.id, id: recipe.id }%></h2>
+  <li class="col-lg-4 offset-lg-4"><%= link_to "#{recipe.name} \n #{ingredients(recipe)}", {controller: 'recipes', action: 'show', user_id: @user.id, id: recipe.id}, class: "list-group-item text-center"%></li>
 <%end%>
+</ul>

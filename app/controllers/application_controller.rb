@@ -13,5 +13,13 @@ class ApplicationController < ActionController::Base
   end
   helper_method :authorize
 
+  def ingredients(recipe)
+    all_ing = ""
+    recipe.ingredients.each do |ingredient|
+      all_ing << ingredient.name + "\n"
+    end
+    all_ing
+  end
+  helper_method :ingredients
 end
 
